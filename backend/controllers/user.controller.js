@@ -35,25 +35,35 @@ module.exports.registerUser = async(req,res,next)=>{
     res.status(201).json({token,user});
 }
 
-module.exports.loginUser = async(req,res,next)=>{
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        res.status(400).json({errors:errors.array()});
-    }
-    const {email,password} = req.body;
-    const user = await userModel.findOne({email}).select("+password");
-    if(!user){
-        res.status(401).json({message:"User not Found"});
-    }
-    const isValid =await user.comparePassword(password);
-    if(!isValid){
-        res.status(401).json({message:"Invalid Credentials"});
-    }
-    const token = user.generateAuthToken();
-    res.cookie("token",token);
-    res.status(200).json({token,user});
+module.exports.loginUser = async (req, res, next) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() }); // ✅ Stops execution
+        }
 
-}
+        const { email, password } = req.body;
+        const user = await userModel.findOne({ email }).select("+password");
+        if (!user) {
+            return res.status(401).json({ message: "User not Found" }); // ✅ Stops execution
+        }
+
+        const isValid = await user.comparePassword(password);
+        if (!isValid) {
+            return res.status(401).json({ message: "Invalid Credentials" }); // ✅ Stops execution
+        }
+
+        const token = user.generateAuthToken();
+        res.cookie("token", token, { httpOnly: true });
+        
+        return res.status(200).json({ token, user }); // ✅ Final response
+
+    } catch (error) {
+        console.error("Login Error:", error);
+        return res.status(500).json({ message: "Internal Server Error" }); // ✅ Ensure only one response
+    }
+};
+
 
 module.exports.getProfile = async(req,res,next)=>{
     return res.status(200).json(req.user);
