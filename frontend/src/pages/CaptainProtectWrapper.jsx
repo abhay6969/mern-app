@@ -1,8 +1,8 @@
 import React, { useContext,useEffect } from "react";
-import { UserDataContext } from "../context/UserContext";
+// import { CaptainDataContext } from "../context/CaptainContext";
 import { useNavigate } from "react-router-dom";
 
-const UserProtectedWrapper = ({ children }) => {
+const CaptainProtectedWrapper = ({ children }) => {
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
 
@@ -14,4 +14,4 @@ const UserProtectedWrapper = ({ children }) => {
   return <>{children}</>;
 };
 
-export default UserProtectedWrapper;
+export default CaptainProtectedWrapper;
