@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import VehiclePanel from "../components/VehiclePanel";
 import ConfirmRide from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
+import WaitForDriver from "../components/WaitForDriver";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -17,7 +18,9 @@ const Home = () => {
   const panelCloseRef = useRef(null);
   const vehiclePanelRef = useRef(null);
   const confirmRideRef = useRef(null);
-  const vehicleFoundRef = useRef(null);
+  const vehicleFoundRef = useRef(null);  
+  const waitingForDriverRef = useRef(null);
+  const [waitingForDriver, setWaitingForDriver] = useState(false);
   const [vehiclePanel, setVehiclePanel] = useState(false);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
   const [vehicleFoundPanel, setVehicleFoundPanel] = useState(false);
@@ -73,6 +76,14 @@ const Home = () => {
       gsap.to(vehicleFoundRef.current, { transform: "translateY(100%)" });
     }
   }, [vehicleFoundPanel]);
+
+  useGSAP(() => {
+    if (waitingForDriver) {
+      gsap.to(waitingForDriverRef.current, { transform: "translateY(0)" });
+    } else {
+      gsap.to(waitingForDriverRef.current, { transform: "translateY(100%)" });
+    }
+  }, [waitingForDriver]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -178,13 +189,19 @@ const Home = () => {
         style={{ transform: "translateY(100%)" }}
         className="fixed z-10 w-full translate-y-full  bg-white bottom-0 px-3 py-6"
       >
-        <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} />
+        <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} setVehicleFoundPanel={setVehicleFoundPanel} />
       </div>
-      <div
+      <div ref={vehicleFoundRef}
         style={{ transform: "translateY(100%)" }}
         className="fixed z-10 w-full translate-y-full  bg-white bottom-0 px-3 py-6"
       >
-        <LookingForDriver ref={vehicleFoundRef} setVehicleFoundPanel={setVehicleFoundPanel} />
+        <LookingForDriver  setVehicleFoundPanel={setVehicleFoundPanel} setWaitingForDriver={setWaitingForDriver}/>
+      </div>
+      <div ref={waitingForDriverRef}
+        style={{ transform: "translateY(100%)" }}
+        className="fixed z-10 w-full translate-y-full  bg-white bottom-0 px-3 py-6"
+      >
+        <WaitForDriver  setWaitingForDriver={setWaitingForDriver} />
       </div>
     </div>
   );

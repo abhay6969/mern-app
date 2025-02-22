@@ -1,11 +1,12 @@
 import React from "react";
+import Loader from '../components/Loader'
 
-const ConfirmRide = () => {
+const ConfirmRide = (props) => {
   return (
     <div>
       <h5
         onClick={() => {
-          props.setVehiclePanel(false);
+          props.setConfirmRidePanel(false);
         }}
         className="p-1 text-center w-[93%] absolute top-0"
       >
@@ -47,9 +48,12 @@ const ConfirmRide = () => {
             </div>
           </div>
         </div>
-        <button className="w-full mt-5 bg-black text-white font-semibold p-3 rounded-lg">
+        <button onClick={() => {props.setVehicleFoundPanel(true)
+          props.setConfirmRidePanel(false);
+        }} className="w-full mt-5 bg-black text-white font-semibold p-3 rounded-lg">
           Confirm
         </button>
+        
       </div>
     </div>
   );

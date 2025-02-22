@@ -1,6 +1,7 @@
 import React from 'react'
+import Loader from './Loader';
 
-const LookingForDriver = () => {
+const LookingForDriver = (props) => {
   return (
     <div>
       <h5
@@ -47,9 +48,7 @@ const LookingForDriver = () => {
             </div>
           </div>
         </div>
-        <button className="w-full mt-5 bg-black text-white font-semibold p-3 rounded-lg">
-          Confirm
-        </button>
+  
       </div>
     </div>
   )
