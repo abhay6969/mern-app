@@ -1,33 +1,31 @@
-import React, { useState, useEffect } from "react";
+import { createContext, useState, useContext } from 'react';
 
-export const CaptainDataContext = React.createContext();
+export const CaptainDataContext = createContext();
 
 const CaptainContext = ({ children }) => {
-  const [captain, setCaptain] = useState(null);
-  const [isLoading,setIsLoading] = useState(false);
-  const [error,setError] = useState(null);
+    const [ captain, setCaptain ] = useState(null);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ error, setError ] = useState(null);
 
-  const updateCaptain = (captain)=>{setCaptain(captainData)}
+    const updateCaptain = (captainData) => {
+        setCaptain(captainData);
+    };
 
-  const value = { captain, setCaptain, isLoading, setIsLoading, error, setError,updateCaptain };
+    const value = {
+        captain,
+        setCaptain,
+        isLoading,
+        setIsLoading,
+        error,
+        setError,
+        updateCaptain
+    };
 
-//   useEffect(() => {
-//     const token = localStorage.getItem("token");
-//     if (token) {
-//       fetch("http://localhost:4000/captain/profile", {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       })
-//         .then((res) => res.json())
-//         .then((data) => setCaptain(data.captain));
-//     }
-//   }, []);
-
-  return (
-    <CaptainDataContext.Provider value={value}>
-      {children}
-    </CaptainDataContext.Provider>
-  );
+    return (
+        <CaptainDataContext.Provider value={value}>
+            {children}
+        </CaptainDataContext.Provider>
+    );
 };
+
 export default CaptainContext;
